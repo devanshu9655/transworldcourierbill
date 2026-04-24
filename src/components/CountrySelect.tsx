@@ -9,7 +9,7 @@ const ALL_COUNTRIES = [
   "Congo (Brazzaville)","Congo (DRC)","Costa Rica","Croatia","Cuba","Cyprus","Czech Republic",
   "Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador",
   "Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France",
-  "Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea",
+  "Gabon","Gambia","Georgia","Germany","Ghana","Great Britain","Greece","Grenada","Guatemala","Guinea",
   "Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran",
   "Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati",
   "Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya",
@@ -24,9 +24,10 @@ const ALL_COUNTRIES = [
   "Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka",
   "Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand",
   "Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu",
-  "Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay",
+  "UK","USA","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay",
   "Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"
 ];
+
 
 interface CountrySelectProps {
   value: string;
@@ -97,7 +98,7 @@ export function CountrySelect({ value, onChange, className = "", placeholder = "
         ref={inputRef}
         type="text"
         autoComplete="off"
-        className={`h-7 text-[11px] bg-[#fdfdfd] border border-slate-300 px-2 rounded-sm shadow-inner uppercase w-full outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-300 ${className}`}
+        className={`flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors uppercase placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
         value={query}
         placeholder={placeholder}
         onChange={e => { setQuery(e.target.value); setOpen(true); setActiveIdx(-1); }}
@@ -106,14 +107,14 @@ export function CountrySelect({ value, onChange, className = "", placeholder = "
       />
       {open && filtered.length > 0 && (
         <ul
-          className="absolute z-[200] mt-[2px] w-full max-h-52 overflow-y-auto bg-white border border-slate-300 rounded-sm shadow-lg text-[11px]"
+          className="absolute z-[200] mt-1 w-full max-h-52 overflow-y-auto bg-popover text-popover-foreground border rounded-md shadow-md text-sm"
           style={{ top: "100%", left: 0 }}
         >
           {filtered.map((c, i) => (
             <li
               key={c}
-              className={`px-3 py-[5px] cursor-pointer uppercase tracking-wide ${
-                i === activeIdx ? "bg-blue-100 text-blue-800" : "hover:bg-slate-100"
+              className={`px-3 py-2 cursor-pointer uppercase tracking-wide ${
+                i === activeIdx ? "bg-accent text-accent-foreground" : "hover:bg-accent/50"
               }`}
               onMouseDown={() => select(c)}
               onMouseEnter={() => setActiveIdx(i)}
@@ -124,7 +125,7 @@ export function CountrySelect({ value, onChange, className = "", placeholder = "
         </ul>
       )}
       {open && filtered.length === 0 && (
-        <div className="absolute z-[200] mt-[2px] w-full bg-white border border-slate-300 rounded-sm shadow-lg text-[11px] px-3 py-2 text-slate-400 italic">
+        <div className="absolute z-[200] mt-1 w-full bg-popover text-popover-foreground border rounded-md shadow-md text-sm px-3 py-2 italic text-muted-foreground">
           No country found
         </div>
       )}

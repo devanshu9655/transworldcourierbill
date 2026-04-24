@@ -21,7 +21,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <img src="/logo.png" alt="Transworld Logo" className="h-10 w-auto object-contain" />
-              <h1 className="text-xl font-bold text-primary">{COMPANY.name}</h1>
+              <div>
+                <h1 className="text-xl font-bold text-primary whitespace-pre-wrap leading-tight">{COMPANY.name}</h1>
+              </div>
             </div>
             <div className="text-right text-[11px] text-muted-foreground">
               <div>GSTIN: {COMPANY.gstin}</div>

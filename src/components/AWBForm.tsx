@@ -78,7 +78,7 @@ export function buildEmptyAWB(): AWB {
 }
 
 function FieldRow({ children }: { children: React.ReactNode }) {
-  return <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">{children}</div>;
+  return <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">{children}</div>;
 }
 
 function Field({ label, children, required }: { label: string; children: React.ReactNode; required?: boolean }) {
@@ -144,8 +144,8 @@ function PartyForm({ value, onChange, title }: { value: Party; onChange: (p: Par
       <CardHeader className="bg-secondary py-3">
         <CardTitle className="text-sm font-bold uppercase tracking-wide text-secondary-foreground">{title}</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-3 pt-4">
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+      <CardContent className="space-y-4 pt-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <div className="md:col-span-2 space-y-1">
             <Label className="text-xs">Search Address Book</Label>
             <div className="relative">
@@ -186,19 +186,25 @@ function PartyForm({ value, onChange, title }: { value: Party; onChange: (p: Par
           <Field label="Country" required>
             <CountrySelect value={value.country} onChange={(v) => update("country", v)} />
           </Field>
-          <Field label="KYC Type">
-            <Select value={value.kycType} onValueChange={(v) => update("kycType", v)}>
-              <SelectTrigger><SelectValue /></SelectTrigger>
-              <SelectContent>{KYC_TYPES.map((k) => <SelectItem key={k} value={k}>{k}</SelectItem>)}</SelectContent>
-            </Select>
-          </Field>
+          {!title.toLowerCase().includes("consignee") && (
+            <Field label="KYC Type">
+              <Select value={value.kycType} onValueChange={(v) => update("kycType", v)}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>{KYC_TYPES.map((k) => <SelectItem key={k} value={k}>{k}</SelectItem>)}</SelectContent>
+              </Select>
+            </Field>
+          )}
         </FieldRow>
 
         <FieldRow>
-          <Field label="KYC Number"><Input value={value.kycNumber} onChange={(e) => update("kycNumber", e.target.value)} /></Field>
-          <Field label="Upload KYC">
-            <Input type="file" accept="image/*,.pdf" onChange={(e) => e.target.files?.[0] && uploadFile("kycFile", e.target.files[0])} />
-          </Field>
+          {!title.toLowerCase().includes("consignee") && (
+            <>
+              <Field label="KYC Number"><Input value={value.kycNumber} onChange={(e) => update("kycNumber", e.target.value)} /></Field>
+              <Field label="Upload KYC">
+                <Input type="file" accept="image/*,.pdf" onChange={(e) => e.target.files?.[0] && uploadFile("kycFile", e.target.files[0])} />
+              </Field>
+            </>
+          )}
           <Field label="Upload Image">
             <Input type="file" accept="image/*" onChange={(e) => e.target.files?.[0] && uploadFile("imageFile", e.target.files[0])} />
           </Field>
@@ -431,16 +437,15 @@ export function AWBForm({ initial }: { initial?: AWB }) {
         <CardHeader className="bg-secondary py-3">
           <CardTitle className="text-sm font-bold uppercase tracking-wide text-secondary-foreground">Air Waybill Information</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3 pt-4">
+        <CardContent className="space-y-4 pt-4">
           <datalist id="cities-list">{uniqueCities.map(c => <option key={c} value={c} />)}</datalist>
           <datalist id="destinations-list">{uniqueDestinations.map(c => <option key={c} value={c} />)}</datalist>
           <datalist id="customers-list">{uniqueCustomers.map(c => <option key={c} value={c} />)}</datalist>
 
           <FieldRow>
             <Field label="AWB Number" required><Input value={awb.awbNumber} onChange={(e) => update("awbNumber", e.target.value)} className="font-mono" /></Field>
-            <Field label="Customer"><Input list="customers-list" value={awb.customer} onChange={(e) => update("customer", e.target.value)} /></Field>
             <Field label="Origin"><Input value={awb.origin} onChange={(e) => update("origin", e.target.value)} /></Field>
-            <Field label="Destination" required><Input list="destinations-list" value={awb.destination} onChange={(e) => update("destination", e.target.value)} /></Field>
+            <Field label="Destination" required><CountrySelect value={awb.destination} onChange={(v) => update("destination", v)} /></Field>
           </FieldRow>
           <FieldRow>
             <Field label="Product" required>

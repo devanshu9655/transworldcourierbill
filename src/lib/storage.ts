@@ -8,7 +8,7 @@ const DRAFT_KEY = "tcs_awb_draft";
 const DEFAULT_SETTINGS: Settings = {
   defaultFscPercent: 46,
   defaultGstMode: "auto",
-  defaultOrigin: "AHMEDABAD",
+  defaultOrigin: "RAJKOT",
   defaultService: "DHL_AMD",
   gstin: "24XXXXXXXXXXXXX",
   personalEmail: "",

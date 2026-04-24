@@ -63,13 +63,16 @@ export function generateProformaInvoice(awb: AWB): jsPDF {
   const M = 10;
   let y = M;
 
+  const nameLines = COMPANY.name.split('\n');
+  const nameOffset = (nameLines.length - 1) * 6;
+
   // Company header
   doc.setFont("helvetica", "bold").setFontSize(16);
   doc.text(COMPANY.name, W / 2, y + 6, { align: "center" });
   doc.setFont("helvetica", "normal").setFontSize(9);
-  doc.text(COMPANY.address, W / 2, y + 11, { align: "center" });
-  doc.text(`Phone: ${COMPANY.phone}  |  Email: ${COMPANY.email}`, W / 2, y + 15, { align: "center" });
-  y += 19;
+  doc.text(COMPANY.address, W / 2, y + 11 + nameOffset, { align: "center" });
+  doc.text(`Phone: ${COMPANY.phone}  |  Email: ${COMPANY.email}`, W / 2, y + 15 + nameOffset, { align: "center" });
+  y += 19 + nameOffset;
   doc.setLineWidth(0.4).line(M, y, W - M, y);
   y += 4;
 
@@ -221,11 +224,14 @@ export function generateAddressLabel(awb: AWB): jsPDF {
   const M = 10;
   let y = M;
 
+  const nameLines = COMPANY.name.split('\n');
+  const nameOffset = (nameLines.length - 1) * 5;
+
   doc.setFont("helvetica", "bold").setFontSize(14);
   doc.text(COMPANY.name, W / 2, y + 6, { align: "center" });
   doc.setFont("helvetica", "normal").setFontSize(8.5);
-  doc.text(`${COMPANY.address}  |  ${COMPANY.phone}`, W / 2, y + 11, { align: "center" });
-  y += 14;
+  doc.text(`${COMPANY.address}  |  ${COMPANY.phone}`, W / 2, y + 11 + nameOffset, { align: "center" });
+  y += 14 + nameOffset;
 
   // Forwarding barcode
   const fwd = barcodeDataUrl(awb.forwardingNumber, { height: 35 });
@@ -298,17 +304,20 @@ export function generateCourierSlip(awb: AWB): jsPDF {
     const W = 210;
     let y = yOffset;
 
+    const nameLines = COMPANY.name.split('\n');
+    const nameOffset = (nameLines.length - 1) * 4.5;
+
     // Header band
     doc.setFillColor(50, 90, 160);
-    doc.rect(M, y, W - 2 * M, 12, "F");
+    doc.rect(M, y, W - 2 * M, 12 + nameOffset, "F");
     doc.setTextColor(255).setFont("helvetica", "bold").setFontSize(13);
     doc.text(COMPANY.name, M + 3, y + 5);
     doc.setFontSize(8).setFont("helvetica", "normal");
-    doc.text(`${COMPANY.address}  |  Ph: ${COMPANY.phone}  |  ${COMPANY.email}`, M + 3, y + 10);
+    doc.text(`${COMPANY.address}  |  Ph: ${COMPANY.phone}  |  ${COMPANY.email}`, M + 3, y + 10 + nameOffset);
     doc.setFontSize(9).setFont("helvetica", "bold");
-    doc.text(copyLabel, W - M - 3, y + 7, { align: "right" });
+    doc.text(copyLabel, W - M - 3, y + 7 + nameOffset / 2, { align: "right" });
     doc.setTextColor(0);
-    y += 13;
+    y += 13 + nameOffset;
 
     // AWB number + barcode row
     doc.setLineWidth(0.4);
